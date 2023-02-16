@@ -1,3 +1,11 @@
 main{
     min-height: 80vh;
 }
+
+h3 {
+    /* adding padding to top and bottom */
+    padding: 1rem 0;
+}
+.rating span{
+    margin: 0.1em;
+}
