@@ -1,22 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate, useRouteMatch } from 'react-router-dom';
-import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap';
+import { Row, Col, Image, ListGroup, Button, Card, Form } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { useDispatch, useSelector } from "react-redux";
-import { listProductDetails,} from "../actions/productActions";
+import { listProductDetails, } from "../actions/productActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
 function ProductScreen() {
+  const [qty, setQty] = useState(1)
   const navigate = useNavigate();
   const { id } = useParams();
-  
+
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
-useEffect(() => {
-  dispatch(listProductDetails(id));
-}, [dispatch, id]);
+  useEffect(() => {
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
 
   if (!product) {
     return <div>Product Not Found</div>;
@@ -74,10 +75,35 @@ useEffect(() => {
                   </Row>
                 </ListGroup.Item>
 
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col xs='auto' className='my-1'>
+                        <Form.Control
+                          as="select"
+                          value={qty}
+                          onChange={(e) => setQty(e.target.value)}
+                        >
+                          {
+
+                            [...Array(product.countInStock).keys()].map((x) => (
+                              <option key={x + 1} value={x + 1}>
+                                {x + 1}
+                              </option>
+                            ))
+                          }
+
+                        </Form.Control>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
+
                 <ListGroup.Item>
                   <Button
                     onClick={() => {
-                      navigate(`/cart/${product._id}?qty=1`);
+                      navigate(`/cart/${product._id}?qty=${qty}`);
                     }}
                     className="btn-block"
                     type="button"
