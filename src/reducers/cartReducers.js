@@ -1,7 +1,4 @@
-import {
-    CART_ADD_ITEM,
-} from '../constants/cartConstants'
-
+import {CART_ADD_ITEM,} from '../constants/cartConstants'
 
 // here product is id, x.product, in src/actions/cartActions.js we assigned product : data. _id
 export const cartReducer = (state = { cartItems: [], shippingAddress: {} }, action) => {
