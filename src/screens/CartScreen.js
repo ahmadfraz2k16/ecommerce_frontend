@@ -3,7 +3,7 @@ import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 import Message from '../components/Message';
-import { addToCart } from '../actions/cartActions';
+import { addToCart, removeFromCart } from '../actions/cartActions';
 import { CART_ADD_ITEM } from '../constants/cartConstants';
 
 
@@ -17,6 +17,9 @@ function CartScreen({ match, location, history }) {
   const navigate = useNavigate();
   const handleProceedToCheckout = () => {
     navigate('/shipping')
+  }
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id))
   }
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
@@ -86,7 +89,7 @@ function CartScreen({ match, location, history }) {
                   <Col md={1}>
                     <Button
                       type='button'
-                      variant='light'>
+                      variant='light' onClick={() => removeFromCartHandler(item.product)}>
                       <i className='fas fa-trash'></i>
                     </Button>
                   </Col>
